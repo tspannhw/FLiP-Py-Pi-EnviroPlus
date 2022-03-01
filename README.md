@@ -123,6 +123,9 @@ key:[rpi4_uuid_upn_20220301174920], properties:[], content:{
 
 ### Flink SQL
 
+![FLiP](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/raw/main/flinksqlclient.jpg)
+
+
 ````
 CREATE CATALOG pulsar WITH (
    'type' = 'pulsar',
@@ -260,6 +263,11 @@ select * from rp4enviroplus;
 
 ````
 
+![FLiPN](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/raw/main/flinksqlresults.jpg)
+![FLiPN](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/raw/main/flinkrow.jpg)
+
+
+
 ### Pulsar SQL
 
 ````
@@ -327,6 +335,8 @@ presto> select * from pulsar."public/default"."rp4enviroplus";
 ![image](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/raw/main/enviroprops.jpg)
 
 ![image](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/raw/main/envirotablesql.jpg.jpg)
+
+![image](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/raw/main/prestoqueries.jpg)
 
 
 
@@ -437,6 +447,8 @@ Batch: 5
 +-------+--------+------------+-------------+------------+----+---+-------+--------+----------+------------------+----------------------------------------------------------------------+---------+----+--------+--------+-------------+--------+----+-----------------+------+--------+----+---------+--------+---------+--------+---------------------------------------------------+-------+-------------------+-------------------+-----------+------------+----------+----------------------------+-------------------------------------------------------------------------------------+-----------------------------------------+----------------------+-----------------------+-----------+-------------------+
 
 ````
+
+![FLiPNS](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/blob/main/pulsarmanager.jpg?raw=true)
 
 
 ### References
