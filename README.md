@@ -119,6 +119,129 @@ USE CATALOG pulsar;
 
 SHOW TABLES;
 
+    ______ _ _       _       _____  ____  _         _____ _ _            _  BETA   
+   |  ____| (_)     | |     / ____|/ __ \| |       / ____| (_)          | |  
+   | |__  | |_ _ __ | | __ | (___ | |  | | |      | |    | |_  ___ _ __ | |_ 
+   |  __| | | | '_ \| |/ /  \___ \| |  | | |      | |    | | |/ _ \ '_ \| __|
+   | |    | | | | | |   <   ____) | |__| | |____  | |____| | |  __/ | | | |_ 
+   |_|    |_|_|_| |_|_|\_\ |_____/ \___\_\______|  \_____|_|_|\___|_| |_|\__|
+          
+        Welcome! Enter 'HELP;' to list all available commands. 'QUIT;' to exit.
+
+
+Flink SQL> CREATE CATALOG pulsar WITH (
+>    'type' = 'pulsar',
+>    'service-url' = 'pulsar://pulsar1:6650',
+>    'admin-url' = 'http://pulsar1:8080',
+>    'format' = 'json'
+> );
+[INFO] Execute statement succeed.
+
+Flink SQL> USE CATALOG pulsar;
+[INFO] Execute statement succeed.
+
+Flink SQL> show tables;
++---------------------------+
+|                table name |
++---------------------------+
+| ble-tempE0:17:54:C1:D8:4C |
+|                  breakout |
+|                      chat |
+|                     chat2 |
+|                 chatfiles |
+|                  chatlog2 |
+|                chatresult |
+|               chatresult2 |
+|                    crypto |
+|            custom-routing |
+|           delayed-message |
+|                dotnettest |
+|           dynamic-topic-0 |
+|           dynamic-topic-1 |
+|           dynamic-topic-2 |
+|           dynamic-topic-3 |
+|           dynamic-topic-4 |
+|                    energy |
+|             energy-influx |
+|                 energylog |
+|                 ex1-basic |
+|                 flaky-DLQ |
+|        funhouselightstate |
+|             funhousestate |
+|                hfptransit |
+|               input-topic |
+|                      iot3 |
+|                iotelastic |
+|             iotjetsonjson |
+|            iotjetsonjson2 |
+|              jetsoninflux |
+|                   moptest |
+|                    mqtt-2 |
+|              nodejs-topic |
+|             nvidia-sensor |
+|                pi-thermal |
+|           pi-thermal-avro |
+|                pi-weather |
+|           pi-weather-avro |
+|                     rp400 |
+|             rp4enviroplus |
+|           scyllacdcsource |
+|                   seeking |
+|                   sensors |
+|                    stocks |
+|                   stocks2 |
+|   telegraf%2Fhost01%2Fcpu |
+|               telegrafcpu |
+|               telegrafmem |
+|                  transcom |
+|                   weather |
++---------------------------+
+51 rows in set
+
+Flink SQL> describe rp4enviroplus;
++---------------+--------+------+-----+--------+-----------+
+|          name |   type | null | key | extras | watermark |
++---------------+--------+------+-----+--------+-----------+
+|       adjtemp | STRING | true |     |        |           |
+|      adjtempf | STRING | true |     |        |           |
+|  amplitude100 |  FLOAT | true |     |        |           |
+| amplitude1000 |  FLOAT | true |     |        |           |
+|  amplitude500 |  FLOAT | true |     |        |           |
+|          amps |  FLOAT | true |     |        |           |
+|           cpu |  FLOAT | true |     |        |           |
+|       cputemp | STRING | true |     |        |           |
+|      cputempf | STRING | true |     |        |           |
+|     diskusage | STRING | true |     |        |           |
+|       endtime | STRING | true |     |        |           |
+|         gasko | STRING | true |     |        |           |
+|     highnoise |  FLOAT | true |     |        |           |
+|          host | STRING | true |     |        |           |
+|      hostname | STRING | true |     |        |           |
+|      humidity |  FLOAT | true |     |        |           |
+|     ipaddress | STRING | true |     |        |           |
+|      lownoise |  FLOAT | true |     |        |           |
+|           lux |  FLOAT | true |     |        |           |
+|    macaddress | STRING | true |     |        |           |
+|        memory |  FLOAT | true |     |        |           |
+|      midnoise |  FLOAT | true |     |        |           |
+|           nh3 |  FLOAT | true |     |        |           |
+|     oxidising |  FLOAT | true |     |        |           |
+|      pressure |  FLOAT | true |     |        |           |
+|     proximity |    INT | true |     |        |           |
+|      reducing |  FLOAT | true |     |        |           |
+|         rowid | STRING | true |     |        |           |
+|       runtime |    INT | true |     |        |           |
+|     starttime | STRING | true |     |        |           |
+|    systemtime | STRING | true |     |        |           |
+|   temperature | STRING | true |     |        |           |
+|  temperaturef | STRING | true |     |        |           |
+|            ts |    INT | true |     |        |           |
+|          uuid | STRING | true |     |        |           |
++---------------+--------+------+-----+--------+-----------+
+35 rows in set
+
+select * from rp4enviroplus;
+
 ````
 
 ### Pulsar SQL
