@@ -3,6 +3,48 @@ FLiP-Py-Pi-EnviroPlus.  Apache Flink, Apache Pulsar, Apache Spark, Python, Raspb
 
 ### Code
 
+### Json Schema
+
+````
+class enviroplus(Record):
+    adjtemp = String()
+    adjtempf = String()
+    amplitude100 = Float()
+    amplitude1000 = Float()
+    amplitude500 = Float()
+    amps = Float()
+    cpu = Float()
+    cputemp = String()
+    cputempf = String()
+    diskusage = String()
+    endtime = String()
+    gasko = String()
+    highnoise = Float()
+    host = String()
+    hostname = String()
+    humidity = Float()
+    ipaddress = String()
+    lownoise = Float()
+    lux = Float()
+    macaddress = String()
+    memory = Float()
+    midnoise = Float()
+    nh3 = Float()
+    oxidising = Float()
+    pressure = Float()
+    proximity = Integer()
+    reducing = Float()
+    rowid = String()
+    runtime = Integer()
+    starttime = String()
+    systemtime = String()
+    temperature = String()
+    temperaturef = String()
+    ts = Integer()
+    uuid = String()
+
+````
+
 ### Example Data
 
 ````
