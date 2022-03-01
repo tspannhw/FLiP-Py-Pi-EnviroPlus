@@ -320,6 +320,16 @@ presto> select * from pulsar."public/default"."rp4enviroplus";
  
 ````
 
+![image](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/raw/main/RP4enviroplustable.jpg)
+
+![image](https://raw.githubusercontent.com/tspannhw/FLiP-Py-Pi-EnviroPlus/main/enviroplussql.jpg)
+
+![image](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/raw/main/enviroprops.jpg)
+
+![image](https://github.com/tspannhw/FLiP-Py-Pi-EnviroPlus/raw/main/envirotablesql.jpg.jpg)
+
+
+
 ### Spark SQL
 
 ````
