@@ -304,6 +304,115 @@ presto> select * from pulsar."public/default"."rp4enviroplus";
  
 ````
 
+### Spark SQL
+
+````
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 3.2.0
+      /_/
+         
+Using Scala version 2.12.15 (OpenJDK 64-Bit Server VM, Java 1.8.0_312)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> val dfPulsar = spark.readStream.format("pulsar").option("service.url", "pulsar://localhost:6650").option("admin.url", "http://localhost:8080").option("topic", "persistent://public/default/rp4enviroplus").load()
+dfPulsar: org.apache.spark.sql.DataFrame = [adjtemp: string, adjtempf: string ... 39 more fields]
+
+scala> dfPulsar.printSchema()
+root
+ |-- adjtemp: string (nullable = true)
+ |-- adjtempf: string (nullable = true)
+ |-- amplitude100: float (nullable = true)
+ |-- amplitude1000: float (nullable = true)
+ |-- amplitude500: float (nullable = true)
+ |-- amps: float (nullable = true)
+ |-- cpu: float (nullable = true)
+ |-- cputemp: string (nullable = true)
+ |-- cputempf: string (nullable = true)
+ |-- diskusage: string (nullable = true)
+ |-- endtime: string (nullable = true)
+ |-- gasko: string (nullable = true)
+ |-- highnoise: float (nullable = true)
+ |-- host: string (nullable = true)
+ |-- hostname: string (nullable = true)
+ |-- humidity: float (nullable = true)
+ |-- ipaddress: string (nullable = true)
+ |-- lownoise: float (nullable = true)
+ |-- lux: float (nullable = true)
+ |-- macaddress: string (nullable = true)
+ |-- memory: float (nullable = true)
+ |-- midnoise: float (nullable = true)
+ |-- nh3: float (nullable = true)
+ |-- oxidising: float (nullable = true)
+ |-- pressure: float (nullable = true)
+ |-- proximity: integer (nullable = true)
+ |-- reducing: float (nullable = true)
+ |-- rowid: string (nullable = true)
+ |-- runtime: integer (nullable = true)
+ |-- starttime: string (nullable = true)
+ |-- systemtime: string (nullable = true)
+ |-- temperature: string (nullable = true)
+ |-- temperaturef: string (nullable = true)
+ |-- ts: integer (nullable = true)
+ |-- uuid: string (nullable = true)
+ |-- __key: binary (nullable = true)
+ |-- __topic: string (nullable = true)
+ |-- __messageId: binary (nullable = true)
+ |-- __publishTime: timestamp (nullable = true)
+ |-- __eventTime: timestamp (nullable = true)
+ |-- __messageProperties: map (nullable = true)
+ |    |-- key: string
+ |    |-- value: string (valueContainsNull = true)
+
+
+scala> 
+
+scala> val pQuery = dfPulsar.selectExpr("*").writeStream.format("console").option("truncate", "false").start()
+22/03/01 13:36:05 WARN ResolveWriteToStream: Temporary checkpoint location created which is deleted normally when the query didn't fail: /tmp/temporary-347b8845-d46f-4feb-95f4-b92f159ab412. If it's required to delete it under any circumstances, please set spark.sql.streaming.forceDeleteTempCheckpointLocation to true. Important to know deleting temp checkpoint folder is best effort.
+22/03/01 13:36:05 WARN ResolveWriteToStream: spark.sql.adaptive.enabled is not supported in streaming DataFrames/Datasets and will be disabled.
+pQuery: org.apache.spark.sql.streaming.StreamingQuery = org.apache.spark.sql.execution.streaming.StreamingQueryWrapper@6169de0c
+
+scala> 
+
+scala> 22/03/01 13:36:07 WARN package: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+-------------------------------------------                                     
+Batch: 0
+-------------------------------------------
++-------+--------+------------+-------------+------------+----+---+-------+--------+---------+-------+-----+---------+----+--------+--------+---------+--------+---+----------+------+--------+---+---------+--------+---------+--------+-----+-------+---------+----------+-----------+------------+---+----+-----+-------+-----------+-------------+-----------+-------------------+
+|adjtemp|adjtempf|amplitude100|amplitude1000|amplitude500|amps|cpu|cputemp|cputempf|diskusage|endtime|gasko|highnoise|host|hostname|humidity|ipaddress|lownoise|lux|macaddress|memory|midnoise|nh3|oxidising|pressure|proximity|reducing|rowid|runtime|starttime|systemtime|temperature|temperaturef|ts |uuid|__key|__topic|__messageId|__publishTime|__eventTime|__messageProperties|
++-------+--------+------------+-------------+------------+----+---+-------+--------+---------+-------+-----+---------+----+--------+--------+---------+--------+---+----------+------+--------+---+---------+--------+---------+--------+-----+-------+---------+----------+-----------+------------+---+----+-----+-------+-----------+-------------+-----------+-------------------+
++-------+--------+------------+-------------+------------+----+---+-------+--------+---------+-------+-----+---------+----+--------+--------+---------+--------+---+----------+------+--------+---+---------+--------+---------+--------+-----+-------+---------+----------+-----------+------------+---+----+-----+-------+-----------+-------------+-----------+-------------------+
+
+pQuery.explain()
+== Physical Plan ==
+WriteToDataSourceV2 org.apache.spark.sql.execution.streaming.sources.MicroBatchWrite@40dfee3b, org.apache.spark.sql.execution.datasources.v2.DataSourceV2Strategy$$Lambda$2950/1357418058@78d47078
++- *(1) Scan ExistingRDD pulsar[adjtemp#205,adjtempf#206,amplitude100#207,amplitude1000#208,amplitude500#209,amps#210,cpu#211,cputemp#212,cputempf#213,diskusage#214,endtime#215,gasko#216,highnoise#217,host#218,hostname#219,humidity#220,ipaddress#221,lownoise#222,lux#223,macaddress#224,memory#225,midnoise#226,nh3#227,oxidising#228,... 17 more fields]
+
+-------------------------------------------
+Batch: 4
+-------------------------------------------
++-------+--------+------------+-------------+------------+----+---+-------+--------+----------+-----------------+----------------------------------------------------------------------+---------+----+--------+--------+-------------+--------+----+-----------------+------+--------+----+---------+--------+---------+--------+---------------------------------------------------+-------+-------------------+-------------------+-----------+------------+----------+----------------------------+-------------------------------------------------------------------------------------+-----------------------------------------+----------------------+-----------------------+-----------+-------------------+
+|adjtemp|adjtempf|amplitude100|amplitude1000|amplitude500|amps|cpu|cputemp|cputempf|diskusage |endtime          |gasko                                                                 |highnoise|host|hostname|humidity|ipaddress    |lownoise|lux |macaddress       |memory|midnoise|nh3 |oxidising|pressure|proximity|reducing|rowid                                              |runtime|starttime          |systemtime         |temperature|temperaturef|ts        |uuid                        |__key                                                                                |__topic                                  |__messageId           |__publishTime          |__eventTime|__messageProperties|
++-------+--------+------------+-------------+------------+----+---+-------+--------+----------+-----------------+----------------------------------------------------------------------+---------+----+--------+--------+-------------+--------+----+-----------------+------+--------+----+---------+--------+---------+--------+---------------------------------------------------+-------+-------------------+-------------------+-----------+------------+----------+----------------------------+-------------------------------------------------------------------------------------+-----------------------------------------+----------------------+-----------------------+-----------+-------------------+
+|27.3   |61.1    |1.0         |0.3          |0.4         |0.3 |0.0|46.2   |115     |31434.2 MB|1646159783.708531|Oxidising: 64077.97 Ohms\nReducing: 121011.49 Ohms\nNH3: 53803.92 Ohms|0.1      |rp4 |rp4     |15.9    |192.168.1.209|0.4     |55.5|a2:3f:eb:35:a7:99|7.5   |0.2     |53.8|64.1     |1014.3  |0        |121.0   |20220301183622_d4c15574-0828-4505-bb4e-86b17b0919e0|8      |03/01/2022 13:36:14|03/01/2022 13:36:24|33.1       |71.6        |1646159784|rpi4_uuid_mfj_20220301183622|[72 70 69 34 5F 75 75 69 64 5F 6D 66 6A 5F 32 30 32 32 30 33 30 31 31 38 33 36 32 32]|persistent://public/default/rp4enviroplus|[08 A5 E5 08 10 DC 08]|2022-03-01 13:36:24.741|null       |{}                 |
++-------+--------+------------+-------------+------------+----+---+-------+--------+----------+-----------------+----------------------------------------------------------------------+---------+----+--------+--------+-------------+--------+----+-----------------+------+--------+----+---------+--------+---------+--------+---------------------------------------------------+-------+-------------------+-------------------+-----------+------------+----------+----------------------------+-------------------------------------------------------------------------------------+-----------------------------------------+----------------------+-----------------------+-----------+-------------------+
+
+-------------------------------------------
+Batch: 5
+-------------------------------------------
++-------+--------+------------+-------------+------------+----+---+-------+--------+----------+------------------+----------------------------------------------------------------------+---------+----+--------+--------+-------------+--------+----+-----------------+------+--------+----+---------+--------+---------+--------+---------------------------------------------------+-------+-------------------+-------------------+-----------+------------+----------+----------------------------+-------------------------------------------------------------------------------------+-----------------------------------------+----------------------+-----------------------+-----------+-------------------+
+|adjtemp|adjtempf|amplitude100|amplitude1000|amplitude500|amps|cpu|cputemp|cputempf|diskusage |endtime           |gasko                                                                 |highnoise|host|hostname|humidity|ipaddress    |lownoise|lux |macaddress       |memory|midnoise|nh3 |oxidising|pressure|proximity|reducing|rowid                                              |runtime|starttime          |systemtime         |temperature|temperaturef|ts        |uuid                        |__key                                                                                |__topic                                  |__messageId           |__publishTime          |__eventTime|__messageProperties|
++-------+--------+------------+-------------+------------+----+---+-------+--------+----------+------------------+----------------------------------------------------------------------+---------+----+--------+--------+-------------+--------+----+-----------------+------+--------+----+---------+--------+---------+--------+---------------------------------------------------+-------+-------------------+-------------------+-----------+------------+----------+----------------------------+-------------------------------------------------------------------------------------+-----------------------------------------+----------------------+-----------------------+-----------+-------------------+
+|27.1   |60.8    |1.0         |0.2          |0.3         |0.3 |0.0|46.2   |115     |31434.2 MB|1646159785.8810012|Oxidising: 63148.94 Ohms\nReducing: 125710.91 Ohms\nNH3: 53413.85 Ohms|0.1      |rp4 |rp4     |15.9    |192.168.1.209|0.5     |55.5|a2:3f:eb:35:a7:99|7.4   |0.2     |53.4|63.1     |1014.3  |0        |125.7   |20220301183624_5343a88c-f354-45f1-80a0-d30feac6ef5e|10     |03/01/2022 13:36:14|03/01/2022 13:36:26|33.1       |71.6        |1646159786|rpi4_uuid_apf_20220301183624|[72 70 69 34 5F 75 75 69 64 5F 61 70 66 5F 32 30 32 32 30 33 30 31 31 38 33 36 32 34]|persistent://public/default/rp4enviroplus|[08 A5 E5 08 10 DD 08]|2022-03-01 13:36:26.913|null       |{}                 |
++-------+--------+------------+-------------+------------+----+---+-------+--------+----------+------------------+----------------------------------------------------------------------+---------+----+--------+--------+-------------+--------+----+-----------------+------+--------+----+---------+--------+---------+--------+---------------------------------------------------+-------+-------------------+-------------------+-----------+------------+----------+----------------------------+-------------------------------------------------------------------------------------+-----------------------------------------+----------------------+-----------------------+-----------+-------------------+
+
+````
+
+
 ### References
 
 * https://shop.pimoroni.com/products/enviro?variant=31155658457171
