@@ -1,7 +1,23 @@
 # FLiP-Py-Pi-EnviroPlus
+
 FLiP-Py-Pi-EnviroPlus.  Apache Flink, Apache Pulsar, Apache Spark, Python, Raspberry Pi, Enviro+ sensors.   Tim streamnative
 
 ### Code
+
+````
+client = pulsar.Client('pulsar://pulsar1:6650')
+producer = client.create_producer(topic='persistent://public/default/rp4enviroplus' ,schema=JsonSchema(enviroplus),properties={"producer-name": "enviroplus-py-sensor","producer-id": "enviroplus-sensor" })
+
+enviroRec = enviroplus()
+enviroRec.adjtemp = str(adjtemp)
+fa=open("/opt/demo/logs/envprec.log", "a+")
+fa.write(str(enviroRec) + "\n")
+fa.close()
+
+print(enviroRec)
+
+producer.send(enviroRec,partition_key=str(uniqueid))
+````
 
 ### Json Schema
 
